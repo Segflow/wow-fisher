@@ -3,6 +3,7 @@ package robot
 import (
 	"fmt"
 	"image"
+	"image/color"
 	"log"
 	"testing"
 
@@ -30,6 +31,12 @@ func TestFindBobber(t *testing.T) {
 	img, err := loadImage(screenImage)
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	bobberColor := color.RGBA{
+		R: 183,
+		G: 119,
+		B: 88,
 	}
 
 	closestW, closestH, distance := closestPixelToColor(img, bobberColor)

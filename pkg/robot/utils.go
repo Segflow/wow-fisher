@@ -44,7 +44,7 @@ func closestPixelToColor(img *image.RGBA, c color.RGBA) (int, int, int) {
 
 			pixelLeft := img.RGBAAt(w-3, h)
 			pixelTop := img.RGBAAt(w, h-3)
-			d := pixelDistance(bobberColor, pixel) + pixelDistance(bobberColor, pixelLeft) + pixelDistance(bobberColor, pixelTop)
+			d := pixelDistance(c, pixel) + pixelDistance(c, pixelLeft) + pixelDistance(c, pixelTop)
 			if closest == -1 || d < closest {
 				closest = d
 				closestW = w

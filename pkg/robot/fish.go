@@ -27,12 +27,9 @@ var (
 		"spell_key":       defFishingSpellKey,
 		"captures_dir":    "./captures",
 		"catch_threshold": "2000",
-	}
-
-	bobberColor = color.RGBA{
-		R: 183,
-		G: 119,
-		B: 88,
+		"bobber_red":      "183",
+		"bobber_green":    "119",
+		"bobber_blue":     "88",
 	}
 )
 
@@ -41,6 +38,7 @@ type FishAction struct {
 	happens        string
 	capturesDir    string
 	catchThreshold int
+	bobberColor    color.RGBA
 }
 
 // Perform performs the fishing action
@@ -96,7 +94,7 @@ func (f *FishAction) moveMouseToCatchPosition() error {
 		return err
 	}
 
-	x, y, _ := closestPixelToColor(img, bobberColor)
+	x, y, _ := closestPixelToColor(img, f.bobberColor)
 	robotgo.MoveMouseSmooth(x, y)
 	return nil
 }
@@ -123,11 +121,31 @@ func buildFishAction(params map[string]string) (Action, error) {
 		return nil, err
 	}
 
+	bobberRed, err := strconv.Atoi(p["bobber_red"])
+	if err != nil {
+		return nil, err
+	}
+
+	bobberGreen, err := strconv.Atoi(p["bobber_green"])
+	if err != nil {
+		return nil, err
+	}
+
+	bobberBlue, err := strconv.Atoi(p["bobber_blue"])
+	if err != nil {
+		return nil, err
+	}
+
 	return &FishAction{
 		spellKey:       p["spell_key"],
 		happens:        p["happens"],
 		capturesDir:    p["captures_dir"],
 		catchThreshold: threshold,
+		bobberColor: color.RGBA{
+			R: uint8(bobberRed),
+			G: uint8(bobberGreen),
+			B: uint8(bobberBlue),
+		},
 	}, nil
 }
 
