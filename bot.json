@@ -1,0 +1,17 @@
+{
+    "actions": [
+        {
+            "name": "fish",
+            "params": {
+                "happens": "always",
+                "catch_threshold": "2000"
+            }
+        },
+        {
+            "name": "afk",
+            "params": {
+                "happens": "rarely"
+            }
+        }
+    ]
+}
