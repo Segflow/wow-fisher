@@ -4,7 +4,9 @@
             "name": "fish",
             "params": {
                 "happens": "always",
-                "catch_threshold": "2000"
+                "catch_threshold": "3500",
+                "toggle_blue_threshold": "100",
+                "check_catch_period": "150"
             }
         },
         {

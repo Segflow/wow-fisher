@@ -3,7 +3,6 @@ package robot
 import (
 	"fmt"
 	"image"
-	"image/color"
 	"log"
 	"testing"
 
@@ -26,29 +25,33 @@ func TestImageDiff(t *testing.T) {
 }
 
 func TestFindBobber(t *testing.T) {
-	screenImage := "../../locationBobber1.png"
+	screenImage := "../../captures/lookupBobber.png"
 
 	img, err := loadImage(screenImage)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	bobberColor := color.RGBA{
-		R: 183,
-		G: 119,
-		B: 88,
-	}
+	centerCropped, _ := cutter.Crop(img, cutter.Config{
+		Width:  1000,
+		Height: 700,
+		Mode:   cutter.Centered,
+	})
+	saveImage("../../captures/cropped_lookupBobber.png", centerCropped)
 
-	closestW, closestH, distance := closestPixelToColor(img, bobberColor)
-	fmt.Printf("Distance: %d\n", distance)
+	bluefiltered := togglePixels(centerCropped, makeBluePixelFilter(100))
+	saveImage("../../captures/filtered_lookupBobber.png", bluefiltered)
+
+	x, y, count := findRegionWithColor(bluefiltered, whiteColor)
+	fmt.Printf("white count: %d\n", count)
 
 	croppedImg, err := cutter.Crop(img, cutter.Config{
 		Width:  screenCaptureBox,
 		Height: screenCaptureBox,
-		Anchor: image.Point{closestW - 20, closestH - 20},
+		Anchor: image.Point{x + 5, y + 5},
 	})
 
-	p := fmt.Sprintf("../../captures/closest_lookupBobber-%d-%d.png", closestW, closestH)
+	p := "../../captures/closest_lookupBobber.png"
 	if err := saveImage(p, croppedImg); err != nil {
 		log.Fatal(err)
 	}
